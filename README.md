@@ -57,7 +57,12 @@ as source.
 | `fh8852v100` | `galaxycore_gc4653` | GalaxyCore GC4653, 2560x1440 at 15-30 fps, MIPI 2-lane RAW10 | GalaxyCore's datasheet (V1.0), and for the PLL/analog start-up and gain steps the datasheet omits, [sophgo/SensorSupportList](https://github.com/sophgo/SensorSupportList) (BSD-2-Clause, notice kept in `gc4653_mipi.h`) |
 
 Its ISP defaults are the SDK's JX-F22 tables and its `.hex` tuning the SDK's
-GC4633 files until the sensor is tuned on a camera.
+GC4633 files until the sensor is tuned on a camera, with one byte changed:
+offset `0x6e` is `0x00`, not GC4633's `0x02`. Bit 1 there tells `libispcore`
+that the sensor applies white balance itself, through the driver's
+`get_awb_gain`. The GC4653 driver does not, so the ISP is left with zero
+gains and the white-balance loop divides by one (SIGFPE in `SetWbGain`).
+Every other 2560x1440 tuning in the SDK (GC4623, OS05A) has `0x00` there.
 
 ## Building
 
