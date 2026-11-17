@@ -49,3 +49,26 @@ it, as the SDK intends.
 The SDKs ship sensor sources for these two sensors only. Every other sensor
 library in them is a prebuilt `.so`; drivers for other sensors are added here
 as source.
+
+## Sensors written here
+
+| Family | Directory | Sensor | Sources of its register values |
+|---|---|---|---|
+| `fh8852v100` | `galaxycore_gc4653` | GalaxyCore GC4653, 2560x1440 at 15-30 fps, MIPI 2-lane RAW10 | GalaxyCore's datasheet (V1.0), and for the PLL/analog start-up and gain steps the datasheet omits, [sophgo/SensorSupportList](https://github.com/sophgo/SensorSupportList) (BSD-2-Clause, notice kept in `gc4653_mipi.h`) |
+
+Its ISP defaults are the SDK's JX-F22 tables and its `.hex` tuning the SDK's
+GC4633 files until the sensor is tuned on a camera.
+
+## Building
+
+Each sensor directory has a self-contained `Makefile`; pass the toolchain:
+
+```sh
+make -C libraries/sensor/fh8852v100/galaxycore_gc4653 CC=arm-openipc-linux-musleabi-gcc
+```
+
+## Licence
+
+GPL-3.0 (`LICENSE`) for the code written here. The SDK files keep their
+origin (see Provenance); the GC4653 register tables carry Sophgo's BSD-2-Clause
+notice.
