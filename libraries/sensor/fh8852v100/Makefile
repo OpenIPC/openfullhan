@@ -1,0 +1,25 @@
+-include ../../Rules.make
+
+all:
+	@for x in `find ./ -maxdepth 2 -mindepth 2 -name "Makefile" `; \
+	do cd `dirname $$x`; if [ $$? ]; then make || exit 1; cd ../; fi; done
+
+clean:
+	@for x in `find ./ -maxdepth 2 -mindepth 2 -name "Makefile" `; \
+	do cd `dirname $$x`; if [ $$? ]; then make clean; cd ../; fi; done
+
+install:
+	@for x in `find ./ -maxdepth 2 -mindepth 2 -name "Makefile" `; \
+	do cd `dirname $$x`; if [ $$? ]; then make install; cd ../; fi; done
+
+prebuild-paraFile:
+	@for x in `find ./ -maxdepth 2 -mindepth 2 -name "Makefile" `; \
+	do cd `dirname $$x`; if [ $$? ]; then make prebuild-paraFile; cd ../; fi; done
+
+build-paraFile:
+	@for x in `find ./ -maxdepth 2 -mindepth 2 -name "Makefile" `; \
+	do cd `dirname $$x`; if [ $$? ]; then make build-paraFile; cd ../; fi; done
+
+delete-paraFile:
+	@for x in `find ./ -maxdepth 2 -mindepth 2 -name "Makefile" `; \
+	do cd `dirname $$x`; if [ $$? ]; then make delete-paraFile; cd ../; fi; done

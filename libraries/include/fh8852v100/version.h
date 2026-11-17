@@ -1,0 +1,7 @@
+/* BUILD VERSION: FH8856_IPC_V1.2.0_20200324 @ aee6fa1 */
+#ifndef _SDK_VERSION_
+#define _SDK_VERSION_
+#define CURRENT_VERSION "V1.2.0"
+#define CURRENT_RELEASE "gaee6fa1"
+#define CURRENT_BUILD_DATE "2020-03-24"
+#endif
