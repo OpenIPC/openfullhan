@@ -220,6 +220,19 @@ static int SetSensorFmt(int format)
 	return 0;
 }
 
+/*
+ * API_ISP_SensorKick() calls this and fails with -1 when it is unset, which
+ * stops majestic's start-up after everything else has worked; neither of
+ * the SDK's V100 sample drivers sets it. The start-up list has already
+ * switched streaming on, so this only says so again, as the V200 SDK's
+ * OS05A driver's kick does ("enable sensor output").
+ */
+static int Sensor_Kick(void)
+{
+	Sensor_Write(0x0100, 0x09);
+	return 0;
+}
+
 static int GetSensorAttribute(char *name, FH_UINT32 *value)
 {
 	return -1;
@@ -333,6 +346,8 @@ struct isp_sensor_if *NAME(Sensor_Create)()
 	gc4653_mipi.init = Sensor_Init;
 	gc4653_mipi.get_vi_attr = GetSensorViAttr;
 	gc4653_mipi.set_sns_fmt = SetSensorFmt;
+	gc4653_mipi.kick = Sensor_Kick;
+	gc4653_mipi.get_vi_mode = GetViMode;
 	gc4653_mipi.set_gain = SetSensorGain;
 	gc4653_mipi.get_gain = GetSensorGain;
 	gc4653_mipi.reset = SensorReset;
