@@ -356,7 +356,7 @@ void NAME(Sensor_Destory)(struct isp_sensor_if *s_if)
 	memset(&gc4653_mipi, 0, sizeof(struct isp_sensor_if));
 }
 
-/* majestic looks the destructor up by its English spelling. */
+/* The destructor under its corrected spelling as well as the SDK's. */
 void NAME(Sensor_Destroy)(struct isp_sensor_if *s_if)
 {
 	NAME(Sensor_Destory)(s_if);
