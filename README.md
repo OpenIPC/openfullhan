@@ -57,8 +57,16 @@ as source.
 | `fh8852v100` | `galaxycore_gc4653` | GalaxyCore GC4653, 2560x1440 at 15-30 fps, MIPI 2-lane RAW10 | GalaxyCore's datasheet (V1.0), and for the PLL/analog start-up and gain steps the datasheet omits, [sophgo/SensorSupportList](https://github.com/sophgo/SensorSupportList) (BSD-2-Clause, notice kept in `gc4653_mipi.h`) |
 
 Its ISP defaults are the SDK's JX-F22 tables and its `.hex` tuning the SDK's
-GC4633 files until the sensor is tuned on a camera, with one byte changed:
-offset `0x6e` is `0x00`, not GC4633's `0x02`. Bit 1 there tells `libispcore`
+GC4633 files until the sensor is tuned on a camera, with two changes.
+
+The SDK ships one GC4633 file as both its day and night tuning, and it is a
+night one: the 16-bit word at `0x78` is `0x0040`, as in the stock PB1's own
+GC4653 night tuning, where every day tuning in the SDK, and the PB1's own
+GC4653 day tuning, has `0x0100`. Used by day it gives a picture with no
+colour at all. In `gc4653_mipi_attr.hex` that word is `0x0100`; the night
+file keeps `0x0040`.
+
+In both, offset `0x6e` is `0x00`, not GC4633's `0x02`. Bit 1 there tells `libispcore`
 that the sensor applies white balance itself, through the driver's
 `get_awb_gain`. The GC4653 driver does not, so the ISP is left with zero
 gains and the white-balance loop divides by one (SIGFPE in `SetWbGain`).
