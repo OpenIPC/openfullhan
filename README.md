@@ -74,6 +74,16 @@ that the sensor applies white balance itself, through the driver's
 gains and the white-balance loop divides by zero (SIGFPE in `SetWbGain`).
 Every other 2560x1440 tuning in the SDK (GC4623, OS05A) has `0x00` there.
 
+In the day file, the saturation is lower than GC4633's: the level at `0x4a1`
+and the 12 gain steps at `0x4a4`-`0x4af` are scaled by 42/50 (`0x60` to
+`0x50`; `48 48 44 40 40 30 28 20 18 12 10 10` to `3c 3c 39 35 35 28 21 1a 14
+0f 0d 0d`). On a PB1, GC4633's values gave colours its owner called "very
+saturated and unrealistic". With majestic's `image.saturation`, 42 matched red,
+green and blue test objects and a phone photo of the same scene. The file with
+those bytes scaled, under a majestic that does not apply `image.saturation`,
+looked the same (OpenIPC/firmware#1610). The SDK's JX-F22 night tuning zeroes
+the bytes at `0x4a0`-`0x4a1`, which is how this block was found.
+
 ## Building
 
 Each sensor directory has a self-contained `Makefile`; pass the toolchain:
